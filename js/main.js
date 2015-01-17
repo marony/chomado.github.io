@@ -7,9 +7,6 @@ var CHARACTER_HEIGHT = 32;
  
 window.onload = function() 
 {
-	var random_position = function () {
-		return { x: rand(SCREEN_WIDTH - CHARACTER_WIDTH), y: rand(SCREEN_HEIGHT - CHARACTER_HEIGHT) };
-	}; 
 	var core = new Core(SCREEN_WIDTH, SCREEN_HEIGHT);
 	core.preload('image/chara1.png');
 	core.fps = 15;
@@ -39,20 +36,20 @@ window.onload = function()
 	var Chara = Class.create(Sprite, {
 		initialize: function (frameNumber, point) { 
 			Sprite.call(this, CHARACTER_WIDTH, CHARACTER_HEIGHT);
-			var pos = random_position();
-			this.x = pos.x;
-			this.y = pos.y;
+			this.set_random_position();
 			this.frame = frameNumber;
 			this.image = core.assets['image/chara1.png'];
  
 			this.on('touchstart', function() {
 				score += point;
 				scoreLabel.text = 'Score: ' + score;
-				var pos = random_position();
-				this.x = pos.x;
-				this.y = pos.y;
+				this.set_random_position();
 			});
 			core.rootScene.addChild(this);
+		},
+		set_random_position: function () {
+			this.x = rand(SCREEN_WIDTH - CHARACTER_WIDTH);
+			this.y = rand(SCREEN_HEIGHT - CHARACTER_HEIGHT);
 		}
 	});
  
@@ -67,9 +64,7 @@ window.onload = function()
  
 		girl.on('touchstart', function() {
 			for (var i = 0; i < enemies.length; i++) {
-				var pos = random_position();
-				enemies[i].x = pos.x;
-				enemies[i].y = pos.y;
+				enemies[i].set_random_position();
 			}
 		});
  
